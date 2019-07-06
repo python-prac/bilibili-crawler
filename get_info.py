@@ -18,6 +18,7 @@ class Project(object):
         """
         :param max_retries:自动重连最大次数
         """
+        super(Project, self).__init__()
         self.S = requests.Session()
         self.S.mount('https://', HTTPAdapter(max_retries=max_retries))
 
@@ -41,11 +42,11 @@ class Project(object):
             return None
 
 
-
-proj = Project()
-for ID in range(2, 400000000+2+1, 40000):
-    url = 'https://api.bilibili.com/x/relation/followings?vmid=%d&pn=1&ps=50&order=desc' % ID
-    print(proj.url_get(url, sleep_time=1))
+if __name__ == "__main__":
+    proj = Project()
+    for ID in range(2, 400000000+2+1, 40000):
+        url = 'https://api.bilibili.com/x/relation/followings?vmid=%d&pn=1&ps=50&order=desc' % ID
+        print(proj.url_get(url, sleep_time=1))
 
 
 
