@@ -136,7 +136,7 @@ def main():
     ips = basics.Remainder(stop=basics.Holder(False), left=basics.Holder(1))
     ip = Thread(
         target=basics.unstorable,
-        args=(Qip, GetIp(conf['ip_addr'], conf['ip_format'], conf['ip_inteval']), ips, lambda: 1)
+        args=(Qip, GetIp(conf['ip_addr'], conf['ip_format'], conf['ip_interval']), ips, lambda: 1)
     )
 
     records = basics.Remainder(stop=basics.Holder(False), left=basics.Holder(2))
