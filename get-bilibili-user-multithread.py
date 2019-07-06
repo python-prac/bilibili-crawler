@@ -52,7 +52,7 @@ def main():
             res = self.spider.url_get(self.api, sleep_time=0)
             l = self.form.findall(res)
             assert len(l) == 2
-            return basics.Resource(time() + l[-1] / 1000 - 1, l[0])
+            return basics.Resource(time() + int(l[-1]) / 1000 - 1, l[0])
 
     def recorder(filename: str, Q: Queue, stop: basics.Remainder):
         while not stop.stop.data or not Q.empty():
@@ -82,6 +82,8 @@ def main():
 
     def pager():
         res, page = Qlist.get()
+        if res == None:
+            return None
         page: bilibili_following_page = page
         try:
             res = json.loads(res)
@@ -140,8 +142,8 @@ def main():
     )
 
     records = basics.Remainder(stop=basics.Holder(False), left=basics.Holder(2))
-    record = Thread(target=recorder, args=(conf['result_file'], Qrecord, records.stop))
-    log = Thread(target=recorder, args=(conf['log_file'], Qlog, records.stop))
+    record = Thread(target=recorder, args=(conf['result_file'], Qrecord, records))
+    log = Thread(target=recorder, args=(conf['log_file'], Qlog, records))
 
     threads = [log, ip, list, page, record] + spiders
 

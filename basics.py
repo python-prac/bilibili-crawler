@@ -41,7 +41,7 @@ def storable(Qstored: Queue, func, stop: Remainder, thence):
 def unstorable(Qrequest: Queue, func: Callable[[], Resource], stop: Remainder, thence):
     while not stop.stop.data:
         r: Request = Qrequest.get()
-        r.result = func()
+        r.resource = func()
         r.event.set()
         Qrequest.task_done()
     stop.left.data -= 1
@@ -49,7 +49,7 @@ def unstorable(Qrequest: Queue, func: Callable[[], Resource], stop: Remainder, t
 
 
 def process(Qrequest: Queue, Qstored: Queue, func: Callable[[Any, Any], Any], Qresult: Queue, stop: Remainder, thence):
-    r = Request(Event(), Resource(0, None))
+    r = Request(Event(), Resource(0, "0.0.0.0:0"))
     while not stop.stop.data or not Qstored.empty():
         s = Qstored.get()
         if not r.resource:
